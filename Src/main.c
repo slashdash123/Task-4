@@ -91,7 +91,7 @@ int main(void)
 	SET_BIT(GPIOG->MODER, GPIO_MODER_MODER14_0);
 
 	// AFRH register (v  zapisemo vrednosti AFn (n, ki pripada UART => n = 7 => (0111))
-	uint32_t* pAafrl = (uint32_t*)GPIOA_AFRH;			// dopisano v stm32f4xx.h stran 5814
+	uint32_t* pAafrl = (uint32_t*)GPIOA_AFRH;					// dopisano v stm32f4xx.h stran 5814
 	// PA9,  bit 7 na 0, 6 na 1, 5 na 1, 4 na 1
 	SET_BIT(*pAafrl, (7<<4));
 
