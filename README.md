@@ -5,17 +5,17 @@ IMPORTANT Some variable declarations and function names are in my native languag
 
 This exercise consists of the implementation of an application that will receive a command (character string) via asynchronous serial communication UART, process it and send feedback back to the computer. For communication (sending and receiving) using RealTerm is recommended.
 
-Command				Action taken			Feedback message 
+Command------------------------Action taken-------------------Feedback message-
 -------------------------------------------------------------------------------
-»L13o\n«                  LED turns on at PG13            »Green LED ON\r\n«
+»L13o\n«------------------LED turns on at PG13---------------»Green LED ON\r\n«
 -------------------------------------------------------------------------------
-»L13f\n«                  LED turns off at PG13           »Green LED OFF\r\n«
+»L13f\n«------------------LED turns off at PG13-------------»Green LED OFF\r\n«
 -------------------------------------------------------------------------------
-»L14o\n«                  LED turns on at PG14            »Red LED ON\r\n«
+»L14o\n«------------------LED turns on at PG14-----------------»Red LED ON\r\n«
 -------------------------------------------------------------------------------
-»L14f\n«                  LED turns off at PG14           »Red LED OFF\r\n«
+»L14f\n«------------------LED turns off at PG14---------------»Red LED OFF\r\n«
 -------------------------------------------------------------------------------
-Anything else                       /                     »Unknown command\r\n«
+Anything else----------------------/----------------------»Unknown command\r\n«
 -------------------------------------------------------------------------------
 
-Tools used: STM32F429I discovery board (Cortex M4), breadboard, wires, 
+Tools used: STM32F429I discovery board (Cortex M4)
