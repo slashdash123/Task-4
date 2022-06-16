@@ -5,7 +5,7 @@ IMPORTANT Some variable declarations and function names are in my native languag
 
 This exercise consists of the implementation of an application that will receive a command (character string) via asynchronous serial communication UART, process it and send feedback back to the computer. For communication (sending and receiving) using RealTerm is recommended.
 
-Command-----------------------Action taken---------------------Feedback message
+Command----------------------Action taken---------------------Feedback message
 -------------------------------------------------------------------------------
 »L13o\n«------------------LED turns on at PG13---------------»Green LED ON\r\n«
 -------------------------------------------------------------------------------
