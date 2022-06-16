@@ -32,17 +32,17 @@ int main(void)
 {
 	/************************ CLOCK CONFIG ************************/
 
-	SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);									// Omogoci uro za port A
-	SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN);									// Omogoci uro za port G
-	SET_BIT(RCC->APB2ENR, RCC_APB2ENR_USART1EN);								// Omogoci uro za UART1
+	SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);							// Omogoci uro za port A
+	SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN);							// Omogoci uro za port G
+	SET_BIT(RCC->APB2ENR, RCC_APB2ENR_USART1EN);							// Omogoci uro za UART1
 
 	/************************ USART CONFIG ************************/
 
 	//1. Enable the USART by writing the UE bit in USART_CR1 register to 1.
-	SET_BIT(USART1->CR1,USART_CR1_UE);											// USART enabled
+	SET_BIT(USART1->CR1,USART_CR1_UE);								// USART enabled
 
 	//2. Program the M bit in USART_CR1 to define the word length.
-	CLEAR_BIT(USART1->CR1,USART_CR1_M);											// 0: 1 Start bit, 8 Data bits, n Stop bit;	1: 1 Start bit, 9 Data bits, n Stop bit
+	CLEAR_BIT(USART1->CR1,USART_CR1_M);								// 0: 1 Start bit, 8 Data bits, n Stop bit;	1: 1 Start bit, 9 Data bits, n Stop bit
 
 	//3. Program the number of stop bits in USART_CR2.
 	CLEAR_BIT(USART1->CR2,USART_CR2_STOP_0);
@@ -51,24 +51,24 @@ int main(void)
 
 	//4. Select DMA enable (DMAT) in USART_CR3 if Multi buffer Communication is to take
 	//place. Configure the DMA register as explained in multibuffer communication.
-	CLEAR_BIT(USART1->CR3,USART_CR3_DMAR);										// 0: DMA mode is disabled for reception; 1: enabled
-	CLEAR_BIT(USART1->CR3,USART_CR3_DMAT);										// 0: DMA mode is disabled for transmission; 1: enabled
+	CLEAR_BIT(USART1->CR3,USART_CR3_DMAR);								// 0: DMA mode is disabled for reception; 1: enabled
+	CLEAR_BIT(USART1->CR3,USART_CR3_DMAT);								// 0: DMA mode is disabled for transmission; 1: enabled
 
 	//5. Select the desired baud rate using the USART_BRR register.
-	//DIV_Mantissa (bit 4 do 15 v BRR): 833;	DIV_Fraction (prvi 4 biti v registru): 5	=> 1200 KBps desired
-	WRITE_REG(USART1->BRR, (5 << 0) | ( 833 << 4) );							//833.3125 kjer je 833 mantissa in 0,3125 fraction
-																				//razlaga: 0,3125 * 16 = 5 ker imamo oversampling 16
-																				//frakcijo vedno pomnožiš z oversampling vrednostjo
+	//DIV_Mantissa (bit 4 do 15 v BRR): 833;  DIV_Fraction (prvi 4 biti v registru): 5 => 1200 KBps desired
+	WRITE_REG(USART1->BRR, (5 << 0) | ( 833 << 4) );						//833.3125 kjer je 833 mantissa in 0,3125 fraction
+													//razlaga: 0,3125 * 16 = 5 ker imamo oversampling 16
+													//frakcijo vedno pomnožiš z oversampling vrednostjo
 
-	//SET_BIT(USART1->BRR, 0x346);												//npr. lahko bi zapisali tudi v hex obliki 833+5(dec)=0x346(hex)
+	//SET_BIT(USART1->BRR, 0x346);									//npr. lahko bi zapisali tudi v hex obliki 833+5(dec)=0x346(hex)
 
 	//6. Set the TE bit in USART_CR1 to send an idle frame as first transmission.
-	SET_BIT(USART1->CR1,USART_CR1_TE);											// 1: Transmitter is enabled
-	SET_BIT(USART1->CR1,USART_CR1_RE);											// 1: Receiver is enabled and begins searching for a start bit
+	SET_BIT(USART1->CR1,USART_CR1_TE);								// 1: Transmitter is enabled
+	SET_BIT(USART1->CR1,USART_CR1_RE);								// 1: Receiver is enabled and begins searching for a start bit
 
 	// Enable interrupt
-	SET_BIT(USART1->CR1,USART_CR1_RXNEIE);										//1: An USART interrupt is generated whenever ORE=1 or RXNE=1 in the USART_SR register
-	//SET_BIT(USART1->CR1,USART_CR1_TXEIE);										//1: An USART interrupt is generated whenever TXE=1 in the USART_SR register
+	SET_BIT(USART1->CR1,USART_CR1_RXNEIE);				//1: An USART interrupt is generated whenever ORE=1 or RXNE=1 in the USART_SR register
+	//SET_BIT(USART1->CR1,USART_CR1_TXEIE);				//1: An USART interrupt is generated whenever TXE=1 in the USART_SR register
 	NVIC_EnableIRQ(USART1_IRQn);
 
 
@@ -91,7 +91,7 @@ int main(void)
 	SET_BIT(GPIOG->MODER, GPIO_MODER_MODER14_0);
 
 	// AFRH register (v  zapisemo vrednosti AFn (n, ki pripada UART => n = 7 => (0111))
-	uint32_t* pAafrl = (uint32_t*)GPIOA_AFRH;									// dopisano v stm32f4xx.h stran 5814
+	uint32_t* pAafrl = (uint32_t*)GPIOA_AFRH;			// dopisano v stm32f4xx.h stran 5814
 	// PA9,  bit 7 na 0, 6 na 1, 5 na 1, 4 na 1
 	SET_BIT(*pAafrl, (7<<4));
 
@@ -107,35 +107,35 @@ int main(void)
 			// BREZ PREKINITEV
 	//		/******** Ukaz ********/
 	//		for(i = 0; i < 6; i++)
-	//		{																	// Ukaz = 6 znakov, funkcija sprejme vsak znak posebej
+	//		{								// Ukaz = 6 znakov, funkcija sprejme vsak znak posebej
 	//			RxBuffer[i] = USART_Receive();
 	//		}
 
 			/******** Akcija in povratno sporocilo ********/
-			// BREZ PREKINITEV: if(strcmp(RxBuffer,"")==0){						// Ukaz je bil sprejet (RxBuffer ni prazen)
+			// BREZ PREKINITEV: if(strcmp(RxBuffer,"")==0){			// Ukaz je bil sprejet (RxBuffer ni prazen)
 			if(RxCount >= 6)
-			{																	// Sprejet je bil ukaz (6 znakov)
+			{								// Sprejet je bil ukaz (6 znakov)
 				if( strncmp(RxBuffer, "L13o\r\n", 6) == 0 )
 				{	// 0 pomeni, da sta si znaka enaka
-					SET_BIT(GPIOG->ODR, (1 << 13) );							// Vključi se LED na PG13
+					SET_BIT(GPIOG->ODR, (1 << 13) );		// Vključi se LED na PG13
 					USART_Transmit("Green LED ON\r\n");
 				}
 				else if( strncmp(RxBuffer, "L13f\r\n", 6) == 0 )
 				{
-					CLEAR_BIT(GPIOG->ODR, (1 << 13) );							// Izključi se LED na PG13
+					CLEAR_BIT(GPIOG->ODR, (1 << 13) );		// Izključi se LED na PG13
 					USART_Transmit("Green LED OFF\r\n");
 				}
 				else if( strncmp(RxBuffer, "L14o\r\n", 6 ) == 0 )
 				{
-					SET_BIT(GPIOG->ODR , (1 << 14) );							// Vključi se LED na PG14
+					SET_BIT(GPIOG->ODR , (1 << 14) );		// Vključi se LED na PG14
 					USART_Transmit("Red LED ON\r\n");
 				}
 				else if( strncmp(RxBuffer, "L14f\r\n", 6 ) == 0 )
 				{
-					CLEAR_BIT(GPIOG->ODR , (1 << 14) );							// Izključi se LED na PG14
+					CLEAR_BIT(GPIOG->ODR , (1 << 14) );		// Izključi se LED na PG14
 					USART_Transmit("Red LED OFF\r\n");
 				}
-				else															// Karkoli drugega
+				else							// Karkoli drugega
 				{
 					USART_Transmit("Neznan ukaz\r\n");
 				}
@@ -144,7 +144,7 @@ int main(void)
 			}
 
 			// BREZ PREKINITEV
-			//strcpy(RxBuffer, "");												// Sprazni RxBuffer (strncpy?)
+			//strcpy(RxBuffer, "");						// Sprazni RxBuffer (strncpy?)
 
 		}
 }
@@ -156,10 +156,10 @@ void USART_Transmit(char *niz_znakov)
 	//7. Write the data to send in the USART_DR register (this clears the TXE bit). Repeat this
 	//for each data to be transmitted in case of single buffer.
 	while(*niz_znakov)
-	{																			// In c string are null-terminated
+	{										// In c string are null-terminated
 		znak = *niz_znakov++;
 		WRITE_REG(USART1->DR, znak);
-		while(READ_BIT(USART1->SR,USART_SR_TXE) == 0){};						// TXE -> 0: Data is not transferred to the shift register;
+		while(READ_BIT(USART1->SR,USART_SR_TXE) == 0){};			// TXE -> 0: Data is not transferred to the shift register;
 	}
 	//8. After writing the last data into the USART_DR register, wait until TC=1. This indicates
 	//that the transmission of the last frame is complete. This is required for instance when
@@ -169,8 +169,8 @@ void USART_Transmit(char *niz_znakov)
 
 	// BREZ PREKINITEV
 //	char USART_Receive(void)
-//{																				// Funkcija vrne znak
-//	while( READ_BIT(USART1->SR, USART_SR_RXNE) == 0 ){}							// Cakaj dokler znak ni sprejet
+//{											// Funkcija vrne znak
+//	while( READ_BIT(USART1->SR, USART_SR_RXNE) == 0 ){}				// Cakaj dokler znak ni sprejet
 //	char znak = READ_REG(USART1->DR);
 //
 //	return znak;
@@ -181,8 +181,8 @@ void USART1_IRQHandler(void)
 {
 	// V primeru RXNE interrupta (znotraj prekinitvene rutine smo zaradi prejemanja)
 	if( READ_BIT(USART1->SR,USART_SR_RXNE) != 0 )
-	{																			// ce RX ni prazen
-		char znak = READ_REG(USART1->DR);										// beri prejet znak
+	{										// ce RX ni prazen
+		char znak = READ_REG(USART1->DR);					// beri prejet znak
 		RxBuffer[RxCount] = znak;
 		RxCount++;
 	}
